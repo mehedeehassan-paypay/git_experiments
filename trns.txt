@@ -1,0 +1,54 @@
+from deep_translator import (GoogleTranslator,
+                             MicrosoftTranslator,
+                             PonsTranslator,
+                             LingueeTranslator,
+                             MyMemoryTranslator,
+                             YandexTranslator,
+                             PapagoTranslator,
+                             DeeplTranslator,
+                             QcriTranslator,
+                             single_detection,
+                             batch_detection)
+                             
+                             
+# translation for small size tag in store name
+
+translated_small_tag=[]
+romaji =""
+
+
+i = 0
+with open("translation_store_name.csv","a") as file:
+    file.write("id,token_translated\n")
+    for name in token_name_list:
+        if i <= 11000:
+            i += 1
+            continue
+            
+        """
+            1.pos tag every store name tag
+            2. take name ,english , url 
+            3.
+        """
+        text = name.split(";")
+        text = ' '.join(text)
+        try:
+            romaji = GoogleTranslator(source='japanese', target='en').translate(text=text)
+        except:
+            converion = kks.convert(text)
+            romaji= [word["hepburn"] for word in converion]
+            romaji = ''.join([''.join([a for a in x]) for x in romaji])
+
+#         translated_small_tag.append(romaji)
+        file.write(str(i)+","+str(romaji)+"\n")
+        
+        print(i,end=' ')
+        i+=1
+        
+        if i > 20000:
+            file.flush()
+            time.sleep(2)
+            break
+
+
+# df["shop_name_translate_samll_tag"] = translated_small_tag
